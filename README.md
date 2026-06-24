@@ -2,6 +2,8 @@
 
 A real-time Rock Paper Scissors game you play with your bare hand in front of a Raspberry Pi camera — the Pi streams video to the browser, and the browser recognizes your gesture and plays against you.
 
+> Built as a senior project at Laingsburg High School, 2026. Scored 185/200.
+
 ---
 
 ## What it does
@@ -22,6 +24,14 @@ camera) with real-time computer vision, and that ended up as something fun and
 visual rather than just a script in a terminal. Streaming the video off the Pi
 and running inference in the browser keeps the Pi light and makes the whole
 thing easy to demo from any device on the network.
+
+## Senior project background
+
+RPS-Robot started as my 2026 senior project at Laingsburg High School. I wanted
+to build something more complete than a simple assignment, so I combined
+Raspberry Pi hardware, real-time video streaming, browser-based hand tracking,
+and a custom web interface into one playable system. The project scored 185/200
+and became one of the first hardware-focused projects in my portfolio.
 
 ## Key features
 
@@ -129,6 +139,7 @@ RPS-Robot/
 ├── setup.sh                # creates the venv and installs dependencies
 ├── run.sh                  # starts the server (supports RPS_DEMO_MODE)
 ├── .env.example            # documented configuration options
+├── docs/                   # senior project presentation (PDF)
 ├── scripts/
 │   └── cleanup_old_instances.sh
 ├── static/
@@ -141,6 +152,8 @@ RPS-Robot/
 ## Screenshots / demo
 
 <!-- TODO: add screenshots or a short GIF of the game in action here. -->
+- [View the senior project presentation](docs/RPS-Robot-Senior-Project.pdf)
+
 _Screenshots and a demo clip will be added here._
 
 ## Future improvements
