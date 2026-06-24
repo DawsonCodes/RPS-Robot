@@ -328,3 +328,11 @@ button {
 }
 #moveOverlay.flash-win { animation: flashWin 0.9s ease-out; }
 #moveOverlay.flash-lose { animation: flashLose 0.9s ease-out; }
+
+.app-footer {
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}

@@ -152,4 +152,4 @@ _Screenshots and a demo clip will be added here._
 
 ## License
 
-Released under the [MIT License](LICENSE).
+© 2026 DawsonCodes. Released under the [MIT License](LICENSE).
