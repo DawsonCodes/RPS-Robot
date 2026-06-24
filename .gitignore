@@ -216,3 +216,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- RPS-Robot project-specific ---
+# Editor/backup leftovers
+*.bak
+*.old
+*.orig
+
+# Local runtime config
+.env

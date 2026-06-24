@@ -64,10 +64,14 @@ const HAND_CONNECTIONS = [
 ];
 const COUNTERS = { rock: "paper", paper: "scissors", scissors: "rock" };
 
+const MOVES = ["rock", "paper", "scissors"];
+const randomMove = () => MOVES[Math.floor(Math.random() * MOVES.length)];
+
 const state = {
   pc: null,
   detector: null,
   detectorReady: false,
+  demoMode: false,
   lastInferTime: 0,
   roundBusy: false,
   currentMove: "no hand",
@@ -395,22 +399,26 @@ async function animateComputer(finalMove) {
 
 async function playRound() {
   if (state.roundBusy) return;
-  if (!["rock", "paper", "scissors"].includes(state.currentMove)) {
-    els.resultText.textContent = "hold a clean rock, paper, or scissors pose first";
-    return;
-  }
-  // Require fresh lock - prevents cheating with stale move
-  const sinceLock = performance.now() - state.lastCleanLockAt;
-  if (sinceLock > 600) {
-    els.resultText.textContent = "hold your move steady, then press play";
-    return;
+  if (state.demoMode) {
+    // No real camera: simulate the player's move so the full loop is playable.
+    state.currentMove = randomMove();
+    setUserMove(state.currentMove);
+  } else {
+    if (!MOVES.includes(state.currentMove)) {
+      els.resultText.textContent = "hold a clean rock, paper, or scissors pose first";
+      return;
+    }
+    // Require fresh lock - prevents cheating with stale move
+    const sinceLock = performance.now() - state.lastCleanLockAt;
+    if (sinceLock > 600) {
+      els.resultText.textContent = "hold your move steady, then press play";
+      return;
+    }
   }
   state.roundBusy = true;
   els.playBtn.disabled = true;
   const userMove = state.currentMove;
-  const computerMove = state.impossibleMode
-    ? COUNTERS[userMove]
-    : ["rock", "paper", "scissors"][Math.floor(Math.random() * 3)];
+  const computerMove = state.impossibleMode ? COUNTERS[userMove] : randomMove();
   log(`Round: user=${userMove} cpu=${computerMove} impossible=${state.impossibleMode}`);
   setUserMove(userMove);
   els.resultText.textContent = "rock... paper... scissors...";
@@ -454,6 +462,19 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+async function detectDemoMode() {
+  try {
+    const res = await fetch("/health");
+    if (res.ok) {
+      const info = await res.json();
+      state.demoMode = !!info.demo;
+    }
+  } catch {
+    // /health is best-effort; assume normal mode if it is unreachable.
+  }
+  log("Demo mode:", state.demoMode ? "on" : "off");
+}
+
 async function boot() {
   setUserMove("no hand");
   setComputerMove("no hand");
@@ -461,14 +482,25 @@ async function boot() {
   updateScore();
   log("Booting RPS Robot");
   log("Hotkeys: [i] impossible | [d] debug | [v] flip skeleton | [space] play");
+  await detectDemoMode();
   try {
     await startWebRTC();
     await initDetector();
   } catch (e) {
     err("Boot failed:", e);
-    els.status.textContent = "failed";
-    els.gestureDetail.textContent = "check pi server";
-    els.resultText.textContent = "could not start stream";
+    if (state.demoMode) {
+      // In demo mode the camera/model may be unavailable; keep the UI playable.
+      els.status.textContent = "demo";
+      els.gestureDetail.textContent = "demo mode";
+      els.resultText.textContent = "demo mode — press play for a random round";
+    } else {
+      els.status.textContent = "failed";
+      els.gestureDetail.textContent = "check pi server";
+      els.resultText.textContent = "could not start stream";
+    }
+  }
+  if (state.demoMode) {
+    els.resultText.textContent = "demo mode — press play for a random round";
   }
 }
 boot();
