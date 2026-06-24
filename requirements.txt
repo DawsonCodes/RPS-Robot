@@ -1,2 +1,13 @@
-aiohttp>=3.13.0,<4
-aiortc>=1.10.0
+# Core runtime dependencies (pip-installable on Raspberry Pi 5 and laptops).
+aiohttp>=3.13.0,<4        # async HTTP server for the signaling + static routes
+aiortc>=1.10.0            # WebRTC peer connection + video track
+av>=11.0.0               # PyAV: encodes captured frames for WebRTC
+numpy>=1.24.0            # frame buffers / image math
+opencv-python-headless>=4.8.0  # USB camera capture + demo-frame rendering
+
+# Notes:
+# - opencv-python-headless is used (no GUI windows are ever opened). On a
+#   Raspberry Pi you may instead use the system package `python3-opencv`
+#   (apt) for better hardware acceleration — see README.
+# - The browser handles MediaPipe gesture recognition, so no ML packages
+#   are required on the server.
