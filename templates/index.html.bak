@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Paper Scissors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span class="brand-name">RPS</span>
+        <span class="brand-meta">PI 5 / VISION</span>
+      </div>
+      <div class="status" id="statusPill">starting</div>
+    </header>
+
+    <main class="stage">
+      <div class="video-frame">
+        <video id="piStream" autoplay playsinline muted></video>
+
+        <div class="overlay overlay-tl" id="moveOverlay">
+          <div class="overlay-label">YOUR MOVE</div>
+          <div class="overlay-value" id="detectedMove">no hand</div>
+          <div class="overlay-detail" id="gestureDetail">starting...</div>
+        </div>
+
+        <div class="overlay overlay-tr">
+          <div class="overlay-label">SCORE</div>
+          <div class="score-row">
+            <div class="score-stat"><span class="num" id="winsCount">0</span><span class="lbl">W</span></div>
+            <div class="score-stat"><span class="num" id="lossesCount">0</span><span class="lbl">L</span></div>
+            <div class="score-stat"><span class="num" id="drawsCount">0</span><span class="lbl">D</span></div>
+          </div>
+        </div>
+      </div>
+
+      <section class="control-strip">
+        <div class="players">
+          <div class="player-block">
+            <div class="player-name">YOU</div>
+            <div class="player-hand" id="userHand">❔</div>
+            <div class="player-move" id="userMoveLabel">show your hand</div>
+          </div>
+          <div class="versus">VS</div>
+          <div class="player-block">
+            <div class="player-name">CPU</div>
+            <div class="player-hand" id="computerHand">❔</div>
+            <div class="player-move" id="computerMoveLabel">press play</div>
+          </div>
+        </div>
+
+        <div class="result-box" id="resultText">show rock, paper, or scissors to begin</div>
+
+        <div class="actions">
+          <button id="playBtn" class="btn-primary">PLAY ROUND</button>
+          <button id="resetBtn" class="btn-ghost">RESET</button>
+          <button id="modeBtn" class="btn-ghost mode-btn">MODE: FAIR</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <canvas id="analysisCanvas" hidden></canvas>
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>
